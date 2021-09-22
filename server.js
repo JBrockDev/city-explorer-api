@@ -1,45 +1,67 @@
-'use strict';
-const express = require('express');
+"use strict";
+const express = require("express");
 const app = express();
-require('dotenv').config();
+require("dotenv").config();
 const PORT = process.env.PORT;
-const weatherData = require('./data/weather.json');
-const cors = require('cors');
+const weatherData = require("./data/weather.json");
+const cors = require("cors");
 app.use(cors());
 
-const Forecast = require('./domain/Forecast');
+const forecastDomain = require("./domain/Forecast.js");
+const { response } = require("express");
 
-app.get('/', (request, response) => {
+app.get("/", (request, response) => {
   response.status(200).send("Test");
 });
 
-app.get('/weather', (request, response) => {
+app.get("/weather", (request, response) => {
   let cityQuery = request.query.searchQuery;
   if (cityQuery) {
     cityQuery = cityQuery.toLowerCase();
   }
   let latitude = request.query.lat;
   let longitude = request.query.lon;
-  if (!cityQuery || !latitude || !longitude) {
-    response.status(300).send("Sorry, you did not supply all needed parameters.");
+  if (
+    cityQuery === undefined ||
+    latitude === undefined ||
+    longitude === undefined
+  ) {
+    handleError(
+      500,
+      "Missing valid city name, longitude, or latitude from weather /GET :: Try a different city name.",
+      response
+    );
   }
-  const cityData = weatherData.find(city => 
-    city.city_name.toLowerCase() === cityQuery &&
-    city.lon === longitude &&
-    city.lat === latitude);
-  
-  let dailyForecast = getForecast(cityData);
-  response.status(200).send(dailyForecast);
+  try {
+    const cityData = weatherData.find(
+      (city) =>
+        city.city_name.toLowerCase() === cityQuery &&
+        city.lon === longitude &&
+        city.lat === latitude
+    );
+    let dailyForecast = getForecast(cityData);
+    response.status(200).send(dailyForecast);
+  } catch (error) {
+    handleError(
+      500,
+      "City does not exist in data from weather /GET :: Try a different city name.",
+      response
+    );
+  }
 });
+
+function handleError(errorCode, errorMessage, response) {
+  response.status(errorCode).send(errorMessage);
+}
 
 function getForecast(cityData) {
   let forecastArray = [];
-  cityData.data.forEach(forecast => {
+  cityData.data.forEach((forecast) => {
     let description = "Low of " + forecast.app_min_temp;
     description += ", high of " + forecast.app_max_temp;
     description += " with " + forecast.weather.description.toLowerCase();
     let date = forecast.valid_date;
-    forecastArray.push([description, date]);
+    forecastArray.push(new forecastDomain.Forecast(date, description));
   });
   return forecastArray;
 }

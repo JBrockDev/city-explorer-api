@@ -4,3 +4,5 @@ class Forecast {
     this.description = description
   }
 }
+
+module.exports = { Forecast };

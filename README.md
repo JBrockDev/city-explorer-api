@@ -19,3 +19,34 @@
 
 ## Credit and Collaborations
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->
+
+
+- [x] Number and name of feature: Set Up Repository
+
+      Estimate of time needed to complete: 5 minutes
+
+      Start time: 6:00pm
+
+      Finish time: 6:05pm
+
+      Actual time needed to complete: 5 minutes
+
+- [x] Number and name of feature: Create Basic API and Return Weather Data
+
+      Estimate of time needed to complete: 35 minutes
+
+      Start time: 7:27pm
+
+      Finish time: 8:00pm
+
+      Actual time needed to complete: 33 minutes
+
+- [x] Number and name of feature: Error Handling
+
+      Estimate of time needed to complete: 15 minutes
+
+      Start time: 6:00am
+
+      Finish time: 7:05am
+
+      Actual time needed to complete: 65 minutes
