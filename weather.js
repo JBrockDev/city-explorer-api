@@ -46,7 +46,6 @@ async function getWeather(request, response) {
         response.status(200).send(weatherObject);
       });
   } catch (error) {
-    console.log(error);
     errors.handleError(
       500,
       "City does not exist in data from weather /GET :: Try a different city name.",

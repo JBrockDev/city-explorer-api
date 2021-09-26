@@ -16,8 +16,6 @@ async function getMovies(request, response) {
       return;
     }
   }
-
-  console.log("does not exist, getting new data");
   if (movieQuery === undefined) {
     errors.handleError(
       500,
